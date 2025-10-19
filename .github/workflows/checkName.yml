@@ -1,0 +1,19 @@
+name: 코드 체크
+
+on: [push, pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 뒷공백 체크
+        run: |
+          if grep -r '[[:blank:]]$' --exclude-dir={node_modules,.git,build} .; then
+            echo "❌ 줄 끝에 공백이 있어요!"
+            exit 1
+          else
+            echo "✅ 뒷공백 없음!"
+          fi
