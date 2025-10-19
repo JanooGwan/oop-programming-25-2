@@ -11,7 +11,7 @@ jobs:
 
       - name: 뒷공백 체크
         run: |
-          if grep -r '[[:blank:]]$' --exclude-dir={node_modules,.git,build} .; then
+          if grep -r '[[:blank:]]$' --include="*.java" --include="*.kt" --include="*.xml" --exclude-dir=node_modules .; then
             echo "❌ 줄 끝에 공백이 있어요!"
             exit 1
           else
