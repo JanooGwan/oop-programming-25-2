@@ -1,41 +1,64 @@
 package org.example.model;
 
-import org.example.global.exception.Error;
-import org.example.global.exception.OutOfStockException;
-
-public class Stock {
-    public static Long stockCount = 0L;
-
-    private Long id;
+public abstract class Stock {
+    private int id;
     private String name;
     private int quantity;
-
-    // private boolean isReordered; (원래 엑셀에는 static 으로 되어 있으나 일단 변경함 static 안하는게 나을듯, 일단 보류)
     private int unitPrice;
+    private static int reorderThreshold;
 
-    public Stock(String name, int quantity, int unitPrice) {
-        this.id = ++stockCount;
+    public Stock(int id, String name, int quantity, int unitPrice) {
+        this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
     }
 
     public void increaseStock(int amount) {
-        quantity += amount;
-    }
-
-    public void increaseStock() {
-        increaseStock(1);
+        if (amount > 0) {
+            this.quantity += amount;
+        }
     }
 
     public void decreaseStock(int amount) {
-        if(quantity - amount < 0) {
-            throw new OutOfStockException(Error.OUT_OF_STOCK);
+        if (amount > 0 && this.quantity >= amount) {
+            this.quantity -= amount;
+        } else {
+            // Not enough stock, could throw an exception
+            throw new IllegalArgumentException("Not enough stock to decrease.");
         }
-        quantity -= amount;
     }
 
-    public void decreaseStock() {
-        decreaseStock(1);
+    public boolean isLowStock() {
+        return this.quantity < reorderThreshold;
+    }
+
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public int getUnitPrice() {
+        return unitPrice;
+    }
+
+    public static int getReorderThreshold() {
+        return reorderThreshold;
+    }
+
+    public static void setReorderThreshold(int reorderThreshold) {
+        Stock.reorderThreshold = reorderThreshold;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
