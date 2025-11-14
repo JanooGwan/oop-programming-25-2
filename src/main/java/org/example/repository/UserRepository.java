@@ -1,6 +1,6 @@
 package org.example.repository;
 
-import com.example.stockmanagementsystem.domain.User;
+import org.example.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

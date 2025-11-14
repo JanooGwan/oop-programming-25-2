@@ -1,10 +1,10 @@
 package org.example.service;
 
-import com.example.stockmanagementsystem.domain.SignUpRequest;
-import com.example.stockmanagementsystem.domain.User;
-import com.example.stockmanagementsystem.repository.UserRepository;
-import com.example.stockmanagementsystem.utils.PasswordHasher;
-import com.example.stockmanagementsystem.utils.SessionManager;
+import org.example.model.SignUpRequest;
+import org.example.model.User;
+import org.example.repository.UserRepository;
+import org.example.utils.PasswordHasher;
+import org.example.utils.SessionManager;
 
 import java.util.Optional;
 

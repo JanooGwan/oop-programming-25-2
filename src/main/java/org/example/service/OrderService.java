@@ -1,9 +1,9 @@
 package org.example.service;
 
-import com.example.stockmanagementsystem.domain.OrderItem;
-import com.example.stockmanagementsystem.domain.Stock;
-import com.example.stockmanagementsystem.repository.InventoryRepository;
-import com.example.stockmanagementsystem.repository.OrderRepository;
+import org.example.model.OrderItem;
+import org.example.model.Stock;
+import org.example.repository.InventoryRepository;
+import org.example.repository.OrderRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,7 +26,7 @@ public class OrderService {
             if (stock.isLowStock()) {
                 notificationService.sendLowStockAlert(stock);
                 // Automatically reorder a default quantity (e.g., 50)
-                requestOrder(stock.getId(), 50); 
+                requestOrder(stock.getId(), 50);
             }
         }
     }
@@ -63,11 +63,11 @@ public class OrderService {
             orderRepository.save(order);
         });
     }
-    
+
     public List<OrderItem> getAllOrders() {
         return orderRepository.findAll();
     }
-    
+
     public List<OrderItem> searchByKeyword(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return getAllOrders();

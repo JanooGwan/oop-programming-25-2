@@ -1,6 +1,7 @@
 package org.example.repository;
 
-import com.example.stockmanagementsystem.domain.OrderItem;
+
+import org.example.model.OrderItem;
 
 import java.util.ArrayList;
 import java.util.List;

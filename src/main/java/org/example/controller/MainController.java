@@ -1,8 +1,9 @@
-package com.example.stockmanagementsystem.controller;
+package org.example.controller;
 
-import com.example.stockmanagementsystem.service.AuthService;
-import com.example.stockmanagementsystem.utils.SceneManager;
+
 import javafx.fxml.FXML;
+import org.example.service.AuthService;
+import org.example.utils.SceneManager;
 
 import java.io.IOException;
 

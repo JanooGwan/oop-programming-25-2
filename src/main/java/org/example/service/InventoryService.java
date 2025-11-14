@@ -1,9 +1,10 @@
 package org.example.service;
 
-import com.example.stockmanagementsystem.domain.IngredientStock;
-import com.example.stockmanagementsystem.domain.NonIngredientStock;
-import com.example.stockmanagementsystem.domain.Stock;
-import com.example.stockmanagementsystem.repository.InventoryRepository;
+
+import org.example.model.IngredientStock;
+import org.example.model.NonIngredientStock;
+import org.example.model.Stock;
+import org.example.repository.InventoryRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -43,8 +44,8 @@ public class InventoryService {
         }
     }
     
-    public List<Stock> getAllStock() {
-        return inventoryRepository.findAll();
+    public Stock getAllStock() {
+        return (Stock) inventoryRepository.findAll();
     }
 
     public void checkLowStockAndNotify() {

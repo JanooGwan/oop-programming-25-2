@@ -1,8 +1,6 @@
-package com.example.stockmanagementsystem.controller;
+package org.example.controller;
 
-import com.example.stockmanagementsystem.domain.IngredientStock;
-import com.example.stockmanagementsystem.domain.Stock;
-import com.example.stockmanagementsystem.service.InventoryService;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +14,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.example.model.IngredientStock;
+import org.example.model.Stock;
+import org.example.service.InventoryService;
 
 import java.io.IOException;
 import java.time.LocalDate;

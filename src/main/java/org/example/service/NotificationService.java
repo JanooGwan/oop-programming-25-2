@@ -1,7 +1,8 @@
 package org.example.service;
 
-import com.example.stockmanagementsystem.domain.IngredientStock;
-import com.example.stockmanagementsystem.domain.Stock;
+
+import org.example.model.IngredientStock;
+import org.example.model.Stock;
 
 public class NotificationService {
 

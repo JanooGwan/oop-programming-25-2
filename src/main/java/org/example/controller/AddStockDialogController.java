@@ -1,12 +1,12 @@
-package com.example.stockmanagementsystem.controller;
+package org.example.controller;
 
-import com.example.stockmanagementsystem.service.InventoryService;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.example.service.InventoryService;
 
 import java.time.LocalDate;
 

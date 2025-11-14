@@ -1,17 +1,14 @@
-package com.example.stockmanagementsystem.controller;
+package org.example.controller;
 
-import com.example.stockmanagementsystem.domain.OrderItem;
-import com.example.stockmanagementsystem.domain.OrderStatus;
-import com.example.stockmanagementsystem.service.OrderService;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.model.OrderItem;
+import org.example.model.OrderStatus;
+import org.example.service.OrderService;
 
 import java.time.LocalDate;
 import java.util.Optional;
