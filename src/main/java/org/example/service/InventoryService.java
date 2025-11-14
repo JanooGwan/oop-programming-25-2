@@ -43,10 +43,11 @@ public class InventoryService {
             }
         }
     }
-    
-    public Stock getAllStock() {
-        return (Stock) inventoryRepository.findAll();
+
+    public List<Stock> getAllStock() {
+        return inventoryRepository.findAll();
     }
+
 
     public void checkLowStockAndNotify() {
         List<Stock> allStock = inventoryRepository.findAll();

@@ -66,7 +66,7 @@ public class InventoryController {
     @FXML
     private void handleAddStock() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/stockmanagementsystem/AddStockDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/stockmanagementsystem/AddStockDialog.fxml"));
             VBox page = loader.load();
 
             Stage dialogStage = new Stage();

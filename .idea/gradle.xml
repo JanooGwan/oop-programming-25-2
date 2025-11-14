@@ -5,10 +5,10 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="21" />
+        <option name="gradleJvm" value="17" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../../../../../학교/3-2/객체지향/project/oop-programming-25-2" />
+            <option value="$PROJECT_DIR$" />
           </set>
         </option>
       </GradleProjectSettings>

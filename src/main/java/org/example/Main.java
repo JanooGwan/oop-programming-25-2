@@ -7,8 +7,11 @@ package org.example;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.example.model.SignUpRequest;
+import org.example.model.User;
 import org.example.model.UserRole;
+import org.example.repository.UserRepository;
 import org.example.service.AuthService;
+import org.example.utils.PasswordHasher;
 import org.example.utils.SceneManager;
 
 import java.io.IOException;

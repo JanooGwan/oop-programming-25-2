@@ -16,7 +16,7 @@ public class SceneManager {
     }
 
     public static void switchTo(String fxmlFile) throws IOException {
-        URL fxmlUrl = SceneManager.class.getResource("/com/example/stockmanagementsystem/" + fxmlFile);
+        URL fxmlUrl = SceneManager.class.getResource("/org/example/stockmanagementsystem/" + fxmlFile);
         if (fxmlUrl == null) {
             throw new IOException("Cannot find FXML file: " + fxmlFile);
         }
