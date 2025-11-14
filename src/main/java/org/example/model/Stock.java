@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.model;
 
 import org.example.global.exception.Error;
 import org.example.global.exception.OutOfStockException;
