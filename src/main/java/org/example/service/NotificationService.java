@@ -1,20 +1,22 @@
 package org.example.service;
 
-
+import javafx.scene.control.Alert;
 import org.example.model.IngredientStock;
 import org.example.model.Stock;
 
 public class NotificationService {
 
-    public void sendExpiryAlert(IngredientStock stock) {
-        // In a real application, this would send an email, SMS, or push notification.
-        // For this example, we'll just print to the console.
-        System.out.println("ALERT: Stock item '" + stock.getName() + "' (ID: " + stock.getId() + ") is expiring in " + stock.daysUntilExpiry() + " days.");
+    public void notifyExpiry(IngredientStock stock) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText("유통기한 임박");
+        alert.setContentText(stock.getName() + " 재고의 유통기한이 임박했습니다.");
+        alert.showAndWait();
     }
 
-    public void sendLowStockAlert(Stock stock) {
-        // In a real application, this would send an email, SMS, or push notification.
-        // For this example, we'll just print to the console.
-        System.out.println("ALERT: Stock item '" + stock.getName() + "' (ID: " + stock.getId() + ") is low on stock. Current quantity: " + stock.getQuantity());
+    public void notifyLowStock(Stock stock) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText("재고 부족");
+        alert.setContentText(stock.getName() + " 재고가 부족합니다. (현재 수량: " + stock.getQuantity() + ")");
+        alert.showAndWait();
     }
 }

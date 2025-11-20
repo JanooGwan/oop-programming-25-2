@@ -1,57 +1,54 @@
 package org.example.repository;
 
-
 import org.example.model.OrderItem;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class OrderRepository {
+
     private static OrderRepository instance;
-    private final List<OrderItem> orderItems = new ArrayList<>();
-    private final AtomicInteger idCounter = new AtomicInteger(0);
+
+    private final Map<Integer, OrderItem> storage = new HashMap<>();
+    private final AtomicInteger idGenerator = new AtomicInteger(0);
 
     private OrderRepository() {}
 
     public static OrderRepository getInstance() {
-        if (instance == null) {
-            instance = new OrderRepository();
-        }
+        if (instance == null) instance = new OrderRepository();
         return instance;
     }
 
-    public OrderItem save(OrderItem orderItem) {
-         // Remove if exists, then add.
-        orderItems.removeIf(o -> o.getOrderId() == orderItem.getOrderId());
-        orderItems.add(orderItem);
-        return orderItem;
+    /** 새로운 발주 ID 생성 */
+    public int nextOrderId() {
+        return idGenerator.incrementAndGet();
     }
 
-    public Optional<OrderItem> findById(int orderId) {
-        return orderItems.stream()
-                .filter(item -> item.getOrderId() == orderId)
-                .findFirst();
+    /** 저장 또는 갱신 */
+    public void save(OrderItem item) {
+        storage.put(item.getOrderId(), item);
     }
 
+    /** ID로 찾기 */
+    public Optional<OrderItem> findById(int id) {
+        return Optional.ofNullable(storage.get(id));
+    }
+
+    /** 전체 조회 */
     public List<OrderItem> findAll() {
-        return new ArrayList<>(orderItems);
-    }
-    
-    public List<OrderItem> searchByKeyword(String keyword) {
-        String lowerCaseKeyword = keyword.toLowerCase();
-        return orderItems.stream()
-                .filter(order -> 
-                    String.valueOf(order.getOrderId()).contains(lowerCaseKeyword) ||
-                    String.valueOf(order.getStockId()).contains(lowerCaseKeyword) ||
-                    order.getStatus().toString().toLowerCase().contains(lowerCaseKeyword)
-                )
-                .collect(Collectors.toList());
+        return new ArrayList<>(storage.values());
     }
 
-    public int getNextId() {
-        return idCounter.incrementAndGet();
+    /** 키워드 검색 */
+    public List<OrderItem> search(String keyword) {
+        String key = keyword.toLowerCase();
+
+        return storage.values().stream()
+                .filter(o ->
+                        String.valueOf(o.getOrderId()).contains(key) ||
+                                String.valueOf(o.getStockId()).contains(key) ||
+                                o.getStatus().name().toLowerCase().contains(key)
+                )
+                .toList();
     }
 }

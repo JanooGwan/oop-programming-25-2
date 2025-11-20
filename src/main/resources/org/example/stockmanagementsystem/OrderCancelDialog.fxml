@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox spacing="10" padding="20"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controller.OrderCancelDialogController">
+
+    <Label text="취소 사유 입력" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+
+    <TextArea fx:id="reasonArea" promptText="취소 사유를 입력하세요..." prefRowCount="5"/>
+
+    <HBox spacing="10">
+        <Button text="확인" onAction="#confirm"/>
+        <Button text="취소" onAction="#close"/>
+    </HBox>
+
+</VBox>

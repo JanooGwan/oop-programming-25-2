@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controller.StoreOrderController">
+
+    <HBox spacing="10">
+        <Button text="재고 관리 화면으로 이동" onAction="#goInventory"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="로그아웃" onAction="#logout"/>
+    </HBox>
+
+    <padding>
+        <Insets top="20" left="20" right="20" bottom="20"/>
+    </padding>
+
+    <Label text="발주 신청 현황"
+           style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+
+    <!-- 발주 현황 Table -->
+    <TableView fx:id="orderTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="orderIdCol" text="주문번호" prefWidth="80"/>
+            <TableColumn fx:id="stockNameCol" text="재고 이름" prefWidth="150"/>
+            <TableColumn fx:id="qtyCol" text="수량" prefWidth="80"/>
+            <TableColumn fx:id="orderDateCol" text="주문일" prefWidth="120"/>
+            <TableColumn fx:id="statusCol" text="상태" prefWidth="120"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="발주 신청" onAction="#openOrderDialog"/>
+        <Button fx:id="cancelButton"
+                text="신청 취소"
+                onAction="#cancelOrder"
+                disable="true"/>
+    </HBox>
+
+</VBox>

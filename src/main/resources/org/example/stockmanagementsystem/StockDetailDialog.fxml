@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controller.StockDetailDialogController"
+      spacing="10">
+
+    <padding>
+        <Insets top="15" left="15" right="15" bottom="15"/>
+    </padding>
+
+    <Label text="재고 상세 정보"
+           style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="8">
+
+        <!-- 🔥 컬럼 제약 조건 -->
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" minWidth="70"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <!-- 🔥 행 제약 조건: 반드시 rowConstraints 태그 안에 들어가야 함 -->
+        <rowConstraints>
+            <RowConstraints minHeight="24"/>
+            <RowConstraints minHeight="24"/>
+            <RowConstraints minHeight="24"/>
+            <RowConstraints minHeight="24"/>
+            <RowConstraints minHeight="24"/>
+        </rowConstraints>
+
+        <!-- 🔥 children 태그는 생략해도 자동 인식됨 -->
+        <children>
+            <Label text="ID :" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="idField" editable="false"
+                       GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="이름 :" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="nameField" editable="false"
+                       GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <!-- 수량 -->
+            <Label text="수량 :" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <HBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                <TextField fx:id="qtyField" prefWidth="100"/>
+                <Button text="-" onAction="#handleDecreaseQty" prefWidth="30"/>
+                <Button text="+" onAction="#handleIncreaseQty" prefWidth="30"/>
+            </HBox>
+
+
+            <Label text="가격 :" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextField fx:id="priceField" editable="false"
+                       GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="유통기한 :" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <TextField fx:id="expiryField" editable="false"
+                       GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+        </children>
+
+    </GridPane>
+
+    <Label fx:id="errorLabel" textFill="red"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="수량 저장" onAction="#handleSaveQuantity"/>
+        <Button text="삭제"     onAction="#handleDelete"/>
+        <Button text="닫기"     onAction="#handleClose"/>
+    </HBox>
+
+</VBox>

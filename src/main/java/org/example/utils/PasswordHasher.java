@@ -2,29 +2,26 @@ package org.example.utils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class PasswordHasher {
 
     public static String sha256(String password) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] encodedhash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-            return bytesToHex(encodedhash);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("SHA-256 algorithm not found", e);
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] encoded = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            return toHex(encoded);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private static String bytesToHex(byte[] hash) {
-        StringBuilder hexString = new StringBuilder(2 * hash.length);
+    private static String toHex(byte[] hash) {
+        StringBuilder sb = new StringBuilder();
         for (byte b : hash) {
             String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-            hexString.append(hex);
+            if (hex.length() == 1) sb.append('0');
+            sb.append(hex);
         }
-        return hexString.toString();
+        return sb.toString();
     }
 }

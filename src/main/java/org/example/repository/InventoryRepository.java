@@ -1,60 +1,60 @@
 package org.example.repository;
 
-
 import org.example.model.Stock;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InventoryRepository {
+
     private static InventoryRepository instance;
-    private final List<Stock> items = new ArrayList<>();
-    private final AtomicInteger idCounter = new AtomicInteger(0);
+
+    private final Map<Integer, Stock> storage = new HashMap<>();
+    private final AtomicInteger idGenerator = new AtomicInteger(0);
 
     private InventoryRepository() {}
 
     public static InventoryRepository getInstance() {
-        if (instance == null) {
-            instance = new InventoryRepository();
-        }
+        if (instance == null) instance = new InventoryRepository();
         return instance;
     }
 
-    public Stock save(Stock stock) {
-        if (stock.getId() == 0) {
-            // This is a simplified ID generation.
-            int newId = idCounter.incrementAndGet();
-            // In a real scenario, you would create a new object with the new ID.
-            // For this example, we assume we can create it with a given ID.
-            // This part of the logic might need adjustment based on how Stock objects are created.
-            // Let's assume Stock has a setId method for this, or constructor allows it.
-            // The provided Stock class does not have setId, so we'll need to be creative.
-            // The best approach is to create a new object, but let's stick to the plan.
-            // The current Stock constructor takes an ID, so we'll manage it from the service.
-        }
-        // Remove if exists, then add.
-        items.removeIf(s -> s.getId() == stock.getId());
-        items.add(stock);
-        return stock;
+    /** ID 자동 생성 */
+    public int getNextId() {
+        return idGenerator.incrementAndGet();
     }
 
-    public Optional<Stock> findById(int stockId) {
-        return items.stream()
-                .filter(item -> item.getId() == stockId)
+    /** 저장 (추가 or 업데이트) */
+    public void save(Stock stock) {
+        storage.put(stock.getId(), stock);
+    }
+
+    /** 삭제 */
+    public void delete(int id) {
+        storage.remove(id);
+    }
+
+    /** ID로 찾기 */
+    public Optional<Stock> findById(int id) {
+        return Optional.ofNullable(storage.get(id));
+    }
+
+    /** 전체 조회 */
+    public List<Stock> findAll() {
+        return new ArrayList<>(storage.values());
+    }
+
+    /** 이름 검색 */
+    public List<Stock> findByNameContains(String keyword) {
+        return storage.values().stream()
+                .filter(s -> s.getName().contains(keyword))
+                .toList();
+    }
+
+    public Optional<Stock> findByName(String name) {
+        return storage.values().stream()
+                .filter(s -> s.getName().equals(name))
                 .findFirst();
     }
 
-    public List<Stock> findAll() {
-        return new ArrayList<>(items);
-    }
-
-    public void delete(int stockId) {
-        items.removeIf(item -> item.getId() == stockId);
-    }
-    
-    public int getNextId() {
-        return idCounter.incrementAndGet();
-    }
 }

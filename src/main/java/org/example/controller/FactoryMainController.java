@@ -1,23 +1,21 @@
 package org.example.controller;
 
-
 import javafx.fxml.FXML;
 import org.example.service.AuthService;
 import org.example.utils.SceneManager;
 
-import java.io.IOException;
-
-public class MainController {
+public class FactoryMainController {
 
     private final AuthService authService = new AuthService();
 
     @FXML
+    private void openOrders() {
+        SceneManager.switchTo("FactoryOrderView.fxml");
+    }
+
+    @FXML
     private void logout() {
         authService.logout();
-        try {
-            SceneManager.switchTo("LoginView.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        SceneManager.switchTo("LoginView.fxml");
     }
 }

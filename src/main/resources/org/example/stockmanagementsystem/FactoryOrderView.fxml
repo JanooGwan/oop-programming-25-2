@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox spacing="10"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controller.FactoryOrderController">
+
+    <padding><Insets top="10" left="10" right="10" bottom="10"/></padding>
+
+    <TableView fx:id="table" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idCol" text="주문번호" prefWidth="80"/>
+            <TableColumn fx:id="stockIdCol" text="재고 ID" prefWidth="80"/>
+            <TableColumn fx:id="qtyCol" text="수량" prefWidth="80"/>
+            <TableColumn fx:id="orderDateCol" text="주문날짜" prefWidth="120"/>
+            <TableColumn fx:id="deliveryDateCol" text="배송날짜" prefWidth="120"/>
+            <TableColumn fx:id="statusCol" text="상태" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10">
+        <Button text="준비중" onAction="#prepare"/>
+        <Button text="배송 시작" onAction="#deliver"/>
+        <Button text="배송 완료" onAction="#complete"/>
+        <Button text="취소" onAction="#cancel"/>
+        <Button text="새로고침" onAction="#refresh"/>
+    </HBox>
+
+</VBox>

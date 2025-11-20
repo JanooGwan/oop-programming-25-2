@@ -1,28 +1,31 @@
 package org.example.model;
 
+import javafx.beans.property.*;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
-public class IngredientStock extends Stock implements Perishable {
-    private LocalDate expiryDate;
+public class IngredientStock extends Stock {
 
-    public IngredientStock(int id, String name, int quantity, int unitPrice, LocalDate expiryDate) {
-        super(id, name, quantity, unitPrice);
-        this.expiryDate = expiryDate;
+    private final ObjectProperty<LocalDate> expiryDate = new SimpleObjectProperty<>();
+
+    public IngredientStock(int id, String name, int qty, int price, int threshold, LocalDate expiry) {
+        super(id, name, qty, price, threshold);
+        this.expiryDate.set(expiry);
     }
 
-    @Override
-    public boolean isExpired() {
-        return LocalDate.now().isAfter(expiryDate);
-    }
-
-    @Override
-    public long daysUntilExpiry() {
-        return ChronoUnit.DAYS.between(LocalDate.now(), expiryDate);
-    }
-    
-    @Override
     public LocalDate getExpiryDate() {
+        return expiryDate.get();
+    }
+
+    public ObjectProperty<LocalDate> expiryDateProperty() {
         return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiry) {
+        this.expiryDate.set(expiry);
+    }
+
+    /** 남은 일수 계산 */
+    public long daysUntilExpiry() {
+        return java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), getExpiryDate());
     }
 }

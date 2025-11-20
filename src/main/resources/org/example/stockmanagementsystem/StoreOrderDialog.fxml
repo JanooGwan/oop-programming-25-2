@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controller.StoreOrderDialogController">
+
+    <padding><Insets top="20" left="20" right="20" bottom="20"/></padding>
+
+    <!-- 재고명 선택 -->
+    <HBox spacing="10">
+        <Label text="재고명:"/>
+        <ComboBox fx:id="stockNameCombo" prefWidth="180"/>
+    </HBox>
+
+    <!-- 수량 입력 -->
+    <HBox spacing="10">
+        <Label text="수량:"/>
+        <TextField fx:id="qtyField" prefWidth="180"/>
+    </HBox>
+
+    <!-- 에러 메시지 -->
+    <Label fx:id="errLabel" textFill="red"/>
+
+    <!-- 제출 -->
+    <Button text="발주 요청" onAction="#submit"/>
+
+</VBox>

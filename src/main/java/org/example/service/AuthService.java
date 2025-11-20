@@ -1,42 +1,40 @@
 package org.example.service;
 
-import org.example.model.SignUpRequest;
 import org.example.model.User;
+import org.example.model.UserRole;
 import org.example.repository.UserRepository;
 import org.example.utils.PasswordHasher;
 import org.example.utils.SessionManager;
 
-import java.util.Optional;
-
 public class AuthService {
-    private final UserRepository userRepository = UserRepository.getInstance();
-    private final SessionManager sessionManager = SessionManager.getInstance();
 
-    public boolean signUp(SignUpRequest request) {
-        if (userRepository.findById(request.getUserId()).isPresent()) {
-            // User already exists
-            return false;
-        }
-        String passwordHash = PasswordHasher.sha256(request.getPassword());
-        User newUser = new User(request.getUserId(), passwordHash, request.getName(), request.getRole());
-        userRepository.save(newUser);
-        return true;
+    private final UserRepository repo = UserRepository.getInstance();
+    private final SessionManager session = SessionManager.getInstance();
+
+    public AuthService() {
+        preloadUsers();
     }
 
-    public boolean login(String userId, String password) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            String passwordHash = PasswordHasher.sha256(password);
-            if (user.getPasswordHash().equals(passwordHash)) {
-                sessionManager.login(user);
-                return true;
-            }
+    /** 초기 계정 2개 생성 */
+    private void preloadUsers() {
+        if (repo.findAll().isEmpty()) {
+            repo.save(new User("store", PasswordHasher.sha256("store"), "음식점 계정", UserRole.STORE));
+            repo.save(new User("factory", PasswordHasher.sha256("factory"), "공장 계정", UserRole.FACTORY));
         }
-        return false;
+    }
+
+    /** 로그인 */
+    public User login(String id, String pw) {
+        return repo.findById(id)
+                .filter(u -> u.getPasswordHash().equals(PasswordHasher.sha256(pw)))
+                .map(u -> {
+                    session.login(u);
+                    return u;
+                })
+                .orElse(null);
     }
 
     public void logout() {
-        sessionManager.logout();
+        session.logout();
     }
 }

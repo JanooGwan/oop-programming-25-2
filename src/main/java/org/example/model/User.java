@@ -13,20 +13,8 @@ public class User {
         this.role = role;
     }
 
-    // Getters
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
+    public String getUserId() { return userId; }
+    public String getPasswordHash() { return passwordHash; }
+    public String getName() { return name; }
+    public UserRole getRole() { return role; }
 }

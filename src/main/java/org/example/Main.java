@@ -1,41 +1,25 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-
-
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.example.model.SignUpRequest;
-import org.example.model.User;
-import org.example.model.UserRole;
-import org.example.repository.UserRepository;
-import org.example.service.AuthService;
-import org.example.utils.PasswordHasher;
+import org.example.service.InventoryService;
+import org.example.service.OrderService;
 import org.example.utils.SceneManager;
-
-import java.io.IOException;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException {
-        // Add a default admin user for testing
-        setupDefaultUser();
+    public void start(Stage stage) {
+
+        // 초기 데이터 삽입
+        InventoryService.getInstance().preloadSampleData();
+        new OrderService().preloadSampleOrders();
 
         SceneManager.setStage(stage);
-        stage.setTitle("Stock Management System");
+        stage.setTitle("샌드위치 가게 재고 관리 시스템");
         SceneManager.switchTo("LoginView.fxml");
     }
 
-    private void setupDefaultUser() {
-        AuthService authService = new AuthService();
-        // Simple check to avoid creating the user every time
-        if (authService.login("admin", "admin") == false) {
-            authService.signUp(new SignUpRequest("admin", "admin", "Administrator", UserRole.ADMIN));
-        }
-        authService.logout(); // Logout after checking/creating
-    }
 
     public static void main(String[] args) {
         launch();

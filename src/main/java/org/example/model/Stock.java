@@ -1,64 +1,44 @@
 package org.example.model;
 
+import javafx.beans.property.*;
+
 public abstract class Stock {
-    private int id;
-    private String name;
-    private int quantity;
-    private int unitPrice;
-    private static int reorderThreshold;
 
-    public Stock(int id, String name, int quantity, int unitPrice) {
-        this.id = id;
-        this.name = name;
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
+    protected IntegerProperty id = new SimpleIntegerProperty();
+    protected StringProperty name = new SimpleStringProperty();
+    protected IntegerProperty quantity = new SimpleIntegerProperty();
+    protected IntegerProperty price = new SimpleIntegerProperty();
+    protected IntegerProperty threshold = new SimpleIntegerProperty();
+
+    public Stock(int id, String name, int qty, int price, int threshold) {
+        this.id.set(id);
+        this.name.set(name);
+        this.quantity.set(qty);
+        this.price.set(price);
+        this.threshold.set(threshold);
     }
 
-    public void increaseStock(int amount) {
-        if (amount > 0) {
-            this.quantity += amount;
-        }
-    }
+    public int getId() { return id.get(); }
+    public IntegerProperty idProperty() { return id; }
 
-    public void decreaseStock(int amount) {
-        if (amount > 0 && this.quantity >= amount) {
-            this.quantity -= amount;
-        } else {
-            // Not enough stock, could throw an exception
-            throw new IllegalArgumentException("Not enough stock to decrease.");
-        }
-    }
+    public String getName() { return name.get(); }
+    public StringProperty nameProperty() { return name; }
 
-    public boolean isLowStock() {
-        return this.quantity < reorderThreshold;
-    }
-
-    // Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public int getUnitPrice() {
-        return unitPrice;
-    }
-
-    public static int getReorderThreshold() {
-        return reorderThreshold;
-    }
-
-    public static void setReorderThreshold(int reorderThreshold) {
-        Stock.reorderThreshold = reorderThreshold;
-    }
+    public int getQuantity() { return quantity.get(); }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        this.quantity.set(quantity);
     }
+    public IntegerProperty quantityProperty() { return quantity; }
+
+    public int getUnitPrice() { return price.get(); }
+    public IntegerProperty unitPriceProperty() { return price; }
+
+    public int getReorderThreshold() { return threshold.get(); }
+    public IntegerProperty reorderThresholdProperty() { return threshold; }
+
+    public void increaseStock(int amount) { this.quantity.set(getQuantity() + amount); }
+    public void decreaseStock(int amount) { this.quantity.set(getQuantity() - amount); }
+
+    public boolean isLowStock() { return getQuantity() < getReorderThreshold(); }
 }

@@ -10,9 +10,7 @@ public class SessionManager {
     private SessionManager() {}
 
     public static SessionManager getInstance() {
-        if (instance == null) {
-            instance = new SessionManager();
-        }
+        if (instance == null) instance = new SessionManager();
         return instance;
     }
 
@@ -24,7 +22,7 @@ public class SessionManager {
         this.currentUser = null;
     }
 
-    public User getCurrentUser() {
+    public User getUser() {
         return currentUser;
     }
 

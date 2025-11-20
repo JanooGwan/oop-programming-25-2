@@ -1,116 +1,161 @@
 package org.example.controller;
 
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
+import javafx.scene.control.TableRow;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.example.global.exception.GlobalExceptionHandler;
 import org.example.model.IngredientStock;
 import org.example.model.Stock;
 import org.example.service.InventoryService;
+import org.example.utils.SceneManager;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
 public class InventoryController {
 
-    @FXML
-    private TableView<Stock> inventoryTable;
-    @FXML
-    private TableColumn<Stock, Integer> idColumn;
-    @FXML
-    private TableColumn<Stock, String> nameColumn;
-    @FXML
-    private TableColumn<Stock, Integer> quantityColumn;
-    @FXML
-    private TableColumn<Stock, Integer> unitPriceColumn;
-    @FXML
-    private TableColumn<Stock, String> expiryDateColumn;
+    @FXML private TableView<Stock> inventoryTable;
+    @FXML private TableColumn<Stock, Integer> idCol;
+    @FXML private TableColumn<Stock, String> nameCol;
+    @FXML private TableColumn<Stock, Integer> qtyCol;
+    @FXML private TableColumn<Stock, Integer> priceCol;
+    @FXML private TableColumn<Stock, String> expiryCol;
 
-    private final InventoryService inventoryService = new InventoryService();
-    private final ObservableList<Stock> stockList = FXCollections.observableArrayList();
+    private final InventoryService inventoryService = InventoryService.getInstance();
+    private final ObservableList<Stock> items = FXCollections.observableArrayList();
 
     @FXML
-    public void initialize() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        unitPriceColumn.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+    private void initialize() {
 
-        expiryDateColumn.setCellValueFactory(cellData -> {
-            Stock stock = cellData.getValue();
-            if (stock instanceof IngredientStock) {
-                LocalDate expiryDate = ((IngredientStock) stock).getExpiryDate();
-                return new SimpleStringProperty(expiryDate.toString());
+        idCol.setCellValueFactory(v -> v.getValue().idProperty().asObject());
+        nameCol.setCellValueFactory(v -> v.getValue().nameProperty());
+        qtyCol.setCellValueFactory(v -> v.getValue().quantityProperty().asObject());
+        priceCol.setCellValueFactory(v -> v.getValue().unitPriceProperty().asObject());
+
+        // 유통기한 표시 - 비식재료는 빈 문자열
+        expiryCol.setCellValueFactory(v -> {
+            Stock s = v.getValue();
+            if (s instanceof IngredientStock ing) {
+                LocalDate d = ing.getExpiryDate();
+                return new SimpleStringProperty(d != null ? d.toString() : "");
             }
-            return new SimpleStringProperty("N/A");
+            return new SimpleStringProperty("");
         });
 
-        loadStockData();
+        // 정렬 막기
+        idCol.setSortable(false);
+        nameCol.setSortable(false);
+
+        // 오른쪽 빈칸 없이 꽉 채우기
+        inventoryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        // 행 더블클릭 → 상세창
+        inventoryTable.setRowFactory(tv -> {
+            TableRow<Stock> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    openStockDetailDialog(row.getItem());
+                }
+            });
+            return row;
+        });
+
+        refreshTable();
     }
 
-    private void loadStockData() {
-        stockList.setAll(inventoryService.getAllStock());
-        inventoryTable.setItems(stockList);
+    private void refreshTable() {
+        items.setAll(inventoryService.getAll());
+        inventoryTable.setItems(items);
+    }
+
+    private void openStockDetailDialog(Stock stock) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/org/example/stockmanagementsystem/StockDetailDialog.fxml")
+            );
+            VBox page = loader.load();
+
+            Stage dialog = new Stage();
+            dialog.setTitle("재고 상세 정보");
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.initOwner(inventoryTable.getScene().getWindow());
+            dialog.setScene(new Scene(page));
+
+            StockDetailDialogController controller = loader.getController();
+            controller.setDialogStage(dialog);
+            controller.setStock(stock);
+
+            dialog.showAndWait();
+            refreshTable();
+
+        } catch (IOException e) {
+            GlobalExceptionHandler.getInstance().handle(e);
+        }
     }
 
     @FXML
     private void handleAddStock() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/stockmanagementsystem/AddStockDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/org/example/stockmanagementsystem/AddStockDialog.fxml")
+            );
             VBox page = loader.load();
 
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Add New Stock");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(inventoryTable.getScene().getWindow());
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
+            Stage dialog = new Stage();
+            dialog.setTitle("재고 추가");
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.initOwner(inventoryTable.getScene().getWindow());
+            dialog.setScene(new Scene(page));
 
             AddStockDialogController controller = loader.getController();
-            controller.setDialogStage(dialogStage);
+            controller.setDialogStage(dialog);
 
-            dialogStage.showAndWait();
-
-            // Refresh table after dialog is closed
-            handleRefresh();
+            dialog.showAndWait();
+            refreshTable();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            GlobalExceptionHandler.getInstance().handle(e);
         }
     }
 
     @FXML
     private void handleAuditExpiry() {
-        inventoryService.auditExpiryAndNotify();
-        showAlert(Alert.AlertType.INFORMATION, "Audit Complete", "Expiry date audit has been performed. Check console for alerts.");
+        try {
+            inventoryService.auditExpiry();
+        } catch (Exception e) {
+            GlobalExceptionHandler.getInstance().handle(e);
+        }
     }
 
     @FXML
     private void handleCheckLowStock() {
-        inventoryService.checkLowStockAndNotify();
-        showAlert(Alert.AlertType.INFORMATION, "Check Complete", "Low stock check has been performed. Check console for alerts.");
-    }
-    
-    @FXML
-    private void handleRefresh() {
-        loadStockData();
+        try {
+            inventoryService.checkLowStock();
+        } catch (Exception e) {
+            GlobalExceptionHandler.getInstance().handle(e);
+        }
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    @FXML
+    private void openOrderPage() {
+        SceneManager.switchTo("StoreOrderView.fxml");
+    }
+
+    @FXML
+    private void handleRefresh() {
+        refreshTable();
+    }
+
+    @FXML
+    private void logout() {
+        SceneManager.switchTo("LoginView.fxml");
     }
 }

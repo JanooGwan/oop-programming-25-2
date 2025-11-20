@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controller.FactoryMainController">
+
+    <top>
+        <MenuBar>
+            <menus>
+                <Menu text="메뉴">
+                    <items>
+                        <MenuItem text="주문 관리" onAction="#openOrders"/>
+                        <MenuItem text="로그아웃" onAction="#logout"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <Label text="공장 관리 화면" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Button text="주문 관리" onAction="#openOrders" maxWidth="200"/>
+        </VBox>
+    </center>
+</BorderPane>
