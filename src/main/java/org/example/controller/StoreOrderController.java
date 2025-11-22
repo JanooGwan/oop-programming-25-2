@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.model.OrderItem;
+import org.example.model.OrderStatus;
 import org.example.model.Stock;
 import org.example.service.InventoryService;
 import org.example.service.OrderService;
@@ -52,8 +53,17 @@ public class StoreOrderController {
         refresh();
 
         orderTable.getSelectionModel().selectedItemProperty()
-                .addListener((obs, oldV, newV) ->
-                        cancelButton.setDisable(newV == null));
+                .addListener((obs, oldV, newV) -> {
+
+                    if (newV == null) {
+                        cancelButton.setDisable(true);
+                        return;
+                    }
+
+                    boolean disabled = newV.getStatus() == OrderStatus.CANCELLED;
+                    cancelButton.setDisable(disabled);
+                });
+
     }
 
 

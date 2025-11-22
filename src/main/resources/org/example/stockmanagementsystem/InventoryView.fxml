@@ -15,8 +15,8 @@
             <Button text="재고 추가" onAction="#handleAddStock"/>
             <Button text="유통기한 임박 확인" onAction="#handleAuditExpiry"/>
             <Button text="재고 부족 확인" onAction="#handleCheckLowStock"/>
-            <Button text="새로고침" onAction="#handleRefresh"/>
             <Button text="발주 신청 화면으로 이동" onAction="#openOrderPage"/>
+            <Button text="로그 조회" onAction="#openLogView"/>
         </HBox>
 
         <Pane HBox.hgrow="ALWAYS"/>

@@ -150,8 +150,8 @@ public class InventoryController {
     }
 
     @FXML
-    private void handleRefresh() {
-        refreshTable();
+    private void openLogView() {
+        SceneManager.switchTo("LogView.fxml");
     }
 
     @FXML

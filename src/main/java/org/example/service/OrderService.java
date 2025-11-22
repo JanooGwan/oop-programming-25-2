@@ -4,6 +4,7 @@ import org.example.model.OrderItem;
 import org.example.model.OrderStatus;
 import org.example.model.Stock;
 import org.example.repository.InventoryRepository;
+import org.example.repository.LogRepository;
 import org.example.repository.OrderRepository;
 import org.example.service.command.*;
 
@@ -21,6 +22,9 @@ public class OrderService {
         // 새 주문은 "REQUESTED" 상태, 배송일 없음
         OrderItem order = new OrderItem(id, stockId, qty, date);
         repo.save(order);
+
+        LogRepository.getInstance().add(
+                "[발주 신청] 주문ID=" + id + " | 재고ID=" + stockId + ", 수량=" + qty);
         return order;
     }
 
@@ -53,6 +57,9 @@ public class OrderService {
     public void cancel(OrderItem order, String reason) {
         new CancelOrderCommand(reason).execute(order);
         repo.save(order);
+
+        LogRepository.getInstance().add(
+                "[발주 취소] 주문ID=" + order.getOrderId() + " | 사유=" + reason);
     }
 
     /**

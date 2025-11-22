@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controller.LogViewController">
+
+    <padding>
+        <Insets top="20" left="20" right="20" bottom="20" />
+    </padding>
+
+    <HBox spacing="10">
+        <Label text="시스템 로그 조회"
+               style="-fx-font-size: 22; -fx-font-weight: bold;" />
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="뒤로가기" onAction="#goBack" />
+    </HBox>
+
+    <TableView fx:id="logTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="timeCol" text="시간" prefWidth="200"/>
+            <TableColumn fx:id="actionCol" text="내용" prefWidth="600"/>
+        </columns>
+    </TableView>
+
+</VBox>

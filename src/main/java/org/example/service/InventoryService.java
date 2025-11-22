@@ -4,6 +4,7 @@ import org.example.model.IngredientStock;
 import org.example.model.NonIngredientStock;
 import org.example.model.Stock;
 import org.example.repository.InventoryRepository;
+import org.example.repository.LogRepository;
 import org.example.service.sort.SortStrategy;
 
 import java.time.LocalDate;
@@ -37,6 +38,8 @@ public class InventoryService {
         }
 
         repo.save(stock);
+        LogRepository.getInstance().add(
+                "[재고 추가] " + name + ", 수량=" + qty);
     }
 
     /** 수동 재고 추가 */
@@ -99,5 +102,7 @@ public class InventoryService {
     /** 재고 삭제 */
     public void deleteStock(int stockId) {
         repo.delete(stockId);
+        LogRepository.getInstance().add(
+                "[재고 삭제] ID=" + stockId);
     }
 }

@@ -32,10 +32,11 @@ public class AuthController {
             }
 
             switch (user.getRole()) {
-                case STORE -> SceneManager.switchTo("StoreMainView.fxml");
-                case FACTORY -> SceneManager.switchTo("FactoryMainView.fxml");
+                case STORE -> SceneManager.switchTo("InventoryView.fxml");
+                case FACTORY -> SceneManager.switchTo("FactoryOrderView.fxml");
                 case ADMIN -> SceneManager.switchTo("AdminMainView.fxml");
             }
+
 
         } catch (Exception e) {
             GlobalExceptionHandler.getInstance().handle(e);

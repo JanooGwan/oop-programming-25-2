@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import org.example.global.exception.GlobalExceptionHandler;
 import org.example.model.IngredientStock;
 import org.example.model.Stock;
+import org.example.repository.LogRepository;
 import org.example.service.InventoryService;
 
 import java.time.LocalDate;
@@ -56,14 +57,16 @@ public class StockDetailDialogController {
                 return;
             }
 
+            int oldQty = stock.getQuantity();
             stock.setQuantity(newQty);
-            // 같은 인스턴스를 repo가 들고 있으므로 setQuantity 만 해도 반영됨
+
+            LogRepository.getInstance().add(
+                    "[수량 변경] " + stock.getName() +
+                            " | " + oldQty + " → " + newQty);
 
             dialogStage.close();
         } catch (NumberFormatException e) {
             errorLabel.setText("수량에는 숫자만 입력할 수 있습니다.");
-        } catch (Exception e) {
-            GlobalExceptionHandler.getInstance().handle(e);
         }
     }
 
